@@ -1,0 +1,30 @@
+logging:
+  level:
+    root: INFO
+    com:
+      dgazdag: DEBUG
+data:
+  location: static
+rate:
+  limit: 10
+  minutes: 1
+spring:
+  application:
+    name: crypto-recommender-service
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate.jdbc.time_zone: UTC
+  datasource:
+    url: jdbc:postgresql://localhost:5432/crypto
+    username: postgres
+    password: admin
+    driver-class-name: org.postgresql.Driver
+  flyway:
+    enabled: true
+redis:
+  host: localhost
+  port: 6379

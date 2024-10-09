@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>pom</packaging>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.3.4</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
+    <groupId>com.dgazdag.crypto-recommender</groupId>
+    <artifactId>crypto-recommender</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+
+    <properties>
+        <openapi-generator.version>7.8.0</openapi-generator.version>
+        <jackson-databind-nullable.version>0.2.4</jackson-databind-nullable.version>
+        <opencsv.version>5.5.2</opencsv.version>
+        <mapstruct.version>1.6.2</mapstruct.version>
+        <java.version>21</java.version>
+        <jib-maven-plugin.version>3.4.3</jib-maven-plugin.version>
+        <image.name>crypto-recommender-service</image.name>
+        <bucket4j.version>8.10.1</bucket4j.version>
+        <lettuce-core.version>6.4.0.RELEASE</lettuce-core.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- Internal dependencies -->
+            <dependency>
+                <groupId>com.dgazdag.crypto-recommender</groupId>
+                <artifactId>crypto-recommender-service</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!-- 3pp dependencies -->
+            <dependency>
+                <groupId>org.openapitools</groupId>
+                <artifactId>jackson-databind-nullable</artifactId>
+                <version>${jackson-databind-nullable.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.opencsv</groupId>
+                <artifactId>opencsv</artifactId>
+                <version>${opencsv.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId>
+                <version>${mapstruct.version}</version>
+            </dependency>
+            <!-- Rate limiting -->
+            <dependency>
+                <groupId>com.bucket4j</groupId>
+                <artifactId>bucket4j-core</artifactId>
+                <version>${bucket4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.bucket4j</groupId>
+                <artifactId>bucket4j-redis</artifactId>
+                <version>${bucket4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.lettuce</groupId>
+                <artifactId>lettuce-core</artifactId>
+                <version>${lettuce-core.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <modules>
+        <module>rest-api</module>
+        <module>crypto-recommender-service</module>
+        <module>integration-test</module>
+    </modules>
+
+</project>
