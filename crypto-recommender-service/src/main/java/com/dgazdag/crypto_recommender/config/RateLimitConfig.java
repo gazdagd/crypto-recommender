@@ -2,9 +2,8 @@ package com.dgazdag.crypto_recommender.config;
 
 import com.dgazdag.crypto_recommender.properties.RateLimitProperties;
 import com.dgazdag.crypto_recommender.properties.RedisProperties;
-import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.BucketConfiguration;
-import io.github.bucket4j.distributed.ExpirationAfterWriteStrategy;
+import io.github.bucket4j.distributed.proxy.ClientSideConfig;
 import io.github.bucket4j.distributed.proxy.ProxyManager;
 import io.github.bucket4j.redis.lettuce.cas.LettuceBasedProxyManager;
 import io.lettuce.core.RedisClient;
@@ -18,6 +17,9 @@ import org.springframework.context.annotation.Configuration;
 
 import java.time.Duration;
 import java.util.function.Supplier;
+
+import static io.github.bucket4j.distributed.ExpirationAfterWriteStrategy.basedOnTimeForRefillingBucketUpToMax;
+import static java.time.Duration.ofMinutes;
 
 @Configuration
 public class RateLimitConfig {
@@ -39,16 +41,19 @@ public class RateLimitConfig {
     @Bean
     public ProxyManager<String> lettuceBasedProxyManager(StatefulRedisConnection<String, byte[]> redisConnection) {
         return LettuceBasedProxyManager.builderFor(redisConnection)
-                .withExpirationStrategy(
-                        ExpirationAfterWriteStrategy.basedOnTimeForRefillingBucketUpToMax(Duration.ofMinutes(1L)))
+                .withClientSideConfig(ClientSideConfig.getDefault()
+                        .withExpirationAfterWriteStrategy(
+                                basedOnTimeForRefillingBucketUpToMax(Duration.ofSeconds(10L))))
                 .build();
     }
 
     @Bean
     public Supplier<BucketConfiguration> bucketConfiguration(RateLimitProperties rateLimitProperties) {
         return () -> BucketConfiguration.builder()
-                .addLimit(Bandwidth.simple(rateLimitProperties.getLimit(),
-                        Duration.ofMinutes(rateLimitProperties.getMinutes())))
+                .addLimit(limit ->
+                        limit.capacity(rateLimitProperties.getLimit())
+                                .refillIntervally(rateLimitProperties.getLimit(),
+                                        ofMinutes(rateLimitProperties.getMinutes())))
                 .build();
     }
 
