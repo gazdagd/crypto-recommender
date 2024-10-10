@@ -24,6 +24,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+        </dependency>
 
         <!-- 3pp dependencies -->
         <dependency>
@@ -67,6 +71,10 @@
             <groupId>com.opencsv</groupId>
             <artifactId>opencsv</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-models-jakarta</artifactId>
+        </dependency>
 
         <!-- Rate limiting -->
         <dependency>
@@ -98,6 +106,7 @@
             <artifactId>mockito-junit-jupiter</artifactId>
             <scope>test</scope>
         </dependency>
+
     </dependencies>
 
     <build>
@@ -152,8 +161,8 @@
                                 <delegatePattern>true</delegatePattern>
                                 <useSpringController>true</useSpringController>
                                 <useSwaggerUI>false</useSwaggerUI>
-                                <documentationProvider>none</documentationProvider>
-                                <annotationLibrary>none</annotationLibrary>
+                                <documentationProvider>springdoc</documentationProvider>
+                                <annotationLibrary>swagger2</annotationLibrary>
                                 <useResponseEntity>false</useResponseEntity>
                                 <unhandledException>true</unhandledException>
                             </configOptions>

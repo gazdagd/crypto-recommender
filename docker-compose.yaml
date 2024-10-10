@@ -22,6 +22,7 @@ services:
     image: com.dgazdag/crypto-recommender-service
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://crypto-pg:5432/crypto
+      REDIS_HOST: crypto-redis
     ports:
       - "8080:8080"
     depends_on:
